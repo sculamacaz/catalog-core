@@ -9,10 +9,8 @@ default y
 
 	# Configurations options for app-elfloader
 	# (they can't be part of the template atm)
-	select APPELFLOADER_ARCH_PRCTL
 	select APPELFLOADER_BRK
 	select APPELFLOADER_CUSTOMAPPNAME
-	select APPELFLOADER_STACK_NBPAGES
 	select APPELFLOADER_VFSEXEC_EXECBIT
 	select APPELFLOADER_VFSEXEC
 	select APPELFLOADER_HFS
@@ -21,6 +19,9 @@ default y
 	select APPELFLOADER_HFS_ETCHOSTNAME
 	select APPELFLOADER_HFS_REPLACEEXIST
 
+	# Select arch_prctl() support.
+	select LIBPOSIX_PROCESS_ARCH_PRCTL
+
 	# Select filesystem implementation: cpio, ramfs, devfs.
 	select LIBVFSCORE
 	select LIBVFSCORE_AUTOMOUNT_UP
@@ -28,3 +29,13 @@ default y
 	select LIBUKCPIO
 	select LIBDEVFS
 	select LIBDEVFS_AUTOMOUNT
+
+	# Add multithreading support to run exit() calls.
+	select LIBUKBOOT_MAINTHREAD
+	select LIBUKBOOT_SHUTDOWNREQ_HANDLER
+	select LIBPOSIX_PROCESS_MULTITHREADING
+
+# Increase the application's default stack size.
+config APPELFLOADER_STACK_NBPAGES
+int
+default 128 if APPBASEELFLOADER
